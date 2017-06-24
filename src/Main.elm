@@ -1,4 +1,4 @@
-port module Dojo exposing (..)
+port module Main exposing (..)
 
 import Html exposing (text, Html, div, button, pre, input)
 import Html.Attributes exposing (style, value, type_)
@@ -19,6 +19,10 @@ type alias NumberDisplay =
     List Side
 
 
+type alias PartRenderer =
+    Int -> Bool -> NumberDisplay -> String
+
+
 type alias Model =
     { currentInput : String
     , size : Int
@@ -32,8 +36,8 @@ type Msg
 
 
 init =
-    ( { currentInput = "0123456789"
-      , size = 2
+    ( { currentInput = "1234567890"
+      , size = 1
       }
     , Cmd.none
     )
@@ -149,7 +153,7 @@ renderBottomBody size last numDisp =
         contentLeft ++ contentMiddle ++ contentRight
 
 
-renderPart : (Int -> Bool -> NumberDisplay -> String) -> Int -> Int -> List Int -> Html Msg
+renderPart : PartRenderer -> Int -> Int -> List Int -> Html Msg
 renderPart partRenderer index size numbers =
     let
         renderPartNum : Int -> String -> String
@@ -181,6 +185,11 @@ charToInt c =
             val
 
 
+renderEmptyLine : Html Msg
+renderEmptyLine =
+    text " "
+
+
 renderNumber : Int -> String -> Html Msg
 renderNumber size str =
     let
@@ -204,6 +213,8 @@ renderNumber size str =
             [ style
                 [ ( "font-family", "monospace" )
                 , ( "font-size", "24px" )
+                , ( "background-color", "black" )
+                , ( "color", "lightgreen" )
                 ]
             ]
         <|
@@ -211,6 +222,8 @@ renderNumber size str =
                 [ [ renderPart renderTopLine 0 size nums ]
                 , renderTopBodies
                 , renderBottomBodies
+                , [ renderEmptyLine
+                  ]
                 ]
 
 

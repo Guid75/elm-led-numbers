@@ -4,4 +4,4 @@ require('./index.html');
 
 var Elm = require('./Main');
 
-var myapp = Elm.Dojo.embed(document.getElementById('main'));
+var myapp = Elm.Main.embed(document.getElementById('main'));
